@@ -11,17 +11,18 @@ class ContactenApp(QWidget):
         self.db_name = "contactenlijst.db"
         
     def open(self):
+        #connection to the SQLite database
         self.conn = sqlite3.connect("contactenlijst.db")
         self.cursor = self.conn.cursor()
 
     def initUI(self):
         self.setWindowTitle('Contactenbeheer')
         self.setGeometry(100, 100, 600, 400)
-
+        # Creating widgets
         self.list_widget = QListWidget()
         self.list_widget.setMinimumWidth(300)
         self.list_widget.itemClicked.connect(self.on_contact_selected)
-
+        # Labels and input fields for contact details
         self.label_naam = QLabel('Naam:')
         self.input_naam = QLineEdit()
         self.label_adres = QLabel('Adres:')
@@ -30,7 +31,7 @@ class ContactenApp(QWidget):
         self.input_telefoon = QLineEdit()
         self.label_geboortedatum = QLabel('Geboortedatum:')
         self.input_geboortedatum = QLineEdit()
-
+        # Buttons for adding and removing contacts
         self.button_toevoegen = QPushButton('Toevoegen')
         self.button_toevoegen.clicked.connect(self.voeg_contact_toe)
 
@@ -41,7 +42,7 @@ class ContactenApp(QWidget):
         self.input_zoeken = QLineEdit()
         self.button_zoeken = QPushButton('Zoeken')
         self.button_zoeken.clicked.connect(self.zoek_contact)
-
+        # Layout management
         vbox = QVBoxLayout()
         hbox_add = QHBoxLayout()
         hbox_add.addWidget(self.label_naam)
@@ -79,6 +80,7 @@ class ContactenApp(QWidget):
         connection.close()
 
     def voeg_contact_toe(self):
+        # Add a new contact to the database
         naam = self.input_naam.text()
         adres = self.input_adres.text()
         telefoon = self.input_telefoon.text()
@@ -94,6 +96,7 @@ class ContactenApp(QWidget):
         self.toon_contacten()
 
     def verwijder_contact(self):
+        # Remove selected contact from the database
         selected_item = self.list_widget.currentItem()
         if selected_item is None:
             return
